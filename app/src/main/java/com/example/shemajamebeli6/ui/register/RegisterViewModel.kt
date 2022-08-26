@@ -1,4 +1,4 @@
-package com.example.tbc_homework15.ui.register
+package com.example.shemajamebeli6.ui.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -41,4 +41,6 @@ class RegisterViewModel(private val repository: Repository) : ViewModel() {
 
         }
     }
+
+
 }

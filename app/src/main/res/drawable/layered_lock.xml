@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/half_overlay"
+        android:drawable="@drawable/ic_lock"
+        android:width="25dp"
+        android:height="36dp"
+        android:start="33dp"
+        android:end="43dp"
+        />
+
+</layer-list>

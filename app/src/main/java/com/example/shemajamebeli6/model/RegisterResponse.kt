@@ -2,7 +2,7 @@ package com.example.shemajamebeli6.model
 
 data class RegisterResponse(
     val id: Int,
-    val s: String?
+    val token: String?
 ) {
     data class RegisterData(
         val email: String?,

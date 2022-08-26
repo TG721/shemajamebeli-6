@@ -1,4 +1,4 @@
-package com.example.tbc_homework15.ui.login
+package com.example.shemajamebeli6.ui.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.Response
+
 
 class LoginViewModel(private val repository: Repository) : ViewModel() {
     private val _loginResponseState = MutableStateFlow<ResponseState<LoginResponse>>(
@@ -37,5 +38,11 @@ class LoginViewModel(private val repository: Repository) : ViewModel() {
             }
 
         }
+    }
+    suspend fun save(key: String, value: String) {
+        repository.save(key,value)
+    }
+    suspend fun checkSession(key: String):String? {
+        return repository.read(key)
     }
 }

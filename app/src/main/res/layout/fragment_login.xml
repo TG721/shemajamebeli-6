@@ -4,8 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.LogInFragment">
+    tools:context=".ui.login.LoginFragment">
 
+
+    <ImageView
+        android:id="@+id/loginImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_ellipse_1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/loginImageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_ellipse_2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/loginGuideline"
@@ -22,7 +38,6 @@
         android:layout_marginHorizontal="30dp"
         android:layout_marginBottom="32dp"
         android:hint="Email"
-        android:paddingBottom="32dp"
         android:soundEffectsEnabled="true"
         android:textColorHint="@color/violet_regular"
         app:helperTextTextColor="@color/regular_red"
@@ -30,16 +45,16 @@
         app:layout_constraintBottom_toTopOf="@+id/loginPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:startIconDrawable="@drawable/layered_mail"
         app:startIconTint="@color/violet_regular">
 
         <com.google.android.material.textfield.MaterialAutoCompleteTextView
             android:id="@+id/loginEmailET"
             android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:background="@color/purple_200"
+            android:layout_height="wrap_content"
+            android:background="@drawable/regular_button"
             android:hint="Email"
-            android:textColorHint="@color/violet_regular"
-            android:textSize="20sp" />
+            android:textColorHint="@color/violet_regular" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -51,7 +66,8 @@
         android:hint="Password"
         android:paddingBottom="32dp"
         android:soundEffectsEnabled="true"
-
+        android:textColorHint="@color/violet_regular"
+        app:endIconDrawable="@drawable/layered_eye"
         app:endIconMode="password_toggle"
         app:endIconTint="@color/violet_regular"
         app:helperTextTextColor="@color/regular_red"
@@ -59,15 +75,16 @@
         app:layout_constraintBottom_toTopOf="@+id/loginLoginButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:startIconDrawable="@drawable/layered_lock"
         app:startIconTint="@color/violet_regular">
 
         <com.google.android.material.textfield.MaterialAutoCompleteTextView
             android:id="@+id/loginPasswordET"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/purple_200"
+            android:background="@drawable/regular_button"
             android:hint="Password"
-            android:textColorHint="@color/white" />
+            android:textColorHint="@color/violet_regular" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatButton
@@ -75,7 +92,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
-        android:background="@color/purple_200"
+        android:background="@drawable/regular_button"
         android:text="Log in"
         android:textColor="@color/white"
         android:textSize="18sp"
@@ -103,18 +120,18 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
-
-
-    <CheckBox
-        android:id="@+id/checkBoxRM"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="23dp"
-        android:text="Remember me"
+    <ImageView
+        android:id="@+id/loginMainImageView2"
+        android:layout_width="93dp"
+        android:layout_height="144dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:src="@drawable/ic_standing"
+        app:layout_constraintBottom_toTopOf="@+id/loginEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginLoginButton" />
+        app:layout_constraintTop_toBottomOf="@+id/welcomeTextView" />
 
     <ProgressBar
         android:id="@+id/loginProgressBar"
@@ -127,5 +144,45 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/twNotRegistered"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="not registered yet?"
+        app:layout_constraintEnd_toStartOf="@+id/registerButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline3" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/registerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/regular_button"
+        android:text="Register"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/twNotRegistered"
+        app:layout_constraintTop_toTopOf="@+id/guideline3" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <CheckBox
+        android:id="@+id/cbRemember"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="1dp"
+        android:text="remember me"
+        app:layout_constraintStart_toStartOf="@+id/loginLoginButton"
+        app:layout_constraintTop_toBottomOf="@+id/loginLoginButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

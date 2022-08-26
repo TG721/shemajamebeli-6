@@ -1,14 +1,22 @@
-package com.example.shemajamebeli6.ui
+package com.example.shemajamebeli6.ui.register
 
+import android.text.InputType
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.example.shemajamebeli6.R
-import com.example.shemajamebeli6.databinding.FragmentRegisteBinding
-import com.example.tbc_homework15.ui.register.RegisterViewModel
+import com.example.shemajamebeli6.app.App
+import com.example.shemajamebeli6.databinding.FragmentRegisterBinding
+import com.example.shemajamebeli6.network.repository.Repository
+import com.example.shemajamebeli6.ui.BaseFragment
+import com.example.shemajamebeli6.utils.FragmentRes
 import com.example.tbc_homework15.utils.ResponseState
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
@@ -36,17 +44,6 @@ fun isValidEmail(Etext: TextInputLayout): Boolean {
     }
 }
 
-fun isValidUsername(Etext: TextInputLayout): Boolean {
-    val username = Etext.editText?.text.toString().trim()
-    return if (username.length < 10) {
-        Etext.helperText = "username should be at least 10 characters"
-        false
-    } else {
-        Etext.helperText = ""
-        true
-    }
-
-}
 
 fun notGoodPass(Epassword: TextInputLayout): Boolean {
     val password = Epassword.editText?.text.toString()
@@ -70,35 +67,55 @@ fun notGoodPass(Epassword: TextInputLayout): Boolean {
     }
 }
 
-class RegisterFragment : BaseFragment<FragmentRegisteBinding>(
-    FragmentRegisteBinding::inflate
+class RegisterFragment : BaseFragment<FragmentRegisterBinding>(
+    FragmentRegisterBinding::inflate
 ) {
-    override fun setup() {
 
-    }
     private lateinit var viewModel: RegisterViewModel
 
     override fun listeners(){
         binding.apply {
+            var eyeClicked = 0
+            registerPassword.setEndIconOnClickListener {
+                if (eyeClicked % 2 == 0) {
+                    registerPassword.editText!!.inputType =
+                        InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                    registerPassword.endIconDrawable = ContextCompat.getDrawable(
+                        requireContext(),
+                        R.drawable.layered_eye_no
+                    )
+                } else {
+                    registerPassword.editText!!.inputType =
+                        InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                    registerPassword.endIconDrawable = ContextCompat.getDrawable(
+                        requireContext(),
+                        R.drawable.layered_eye
+                    )
+                }
+                eyeClicked++
 
-            ibtnRegister.setOnClickListener {
+            }
+            registerBackButton.setOnClickListener {
+                findNavController().popBackStack()
+            }
+            registerRegisterButton.setOnClickListener {
                 when {
-                    checkEmpty(tilEmail) || checkEmpty(tilPassword) || checkEmpty(
-                        tilRepeatPassword
+                    checkEmpty(registerEmail) || checkEmpty(registerPassword) || checkEmpty(
+                        registerPasswordRepeat
                     ) -> {
                     }
-                    notGoodPass(tilPassword) -> {}
-                    !isValidEmail(tilEmail) -> {}
-                    tilPassword.editText?.text.toString()!=tilRepeatPassword.editText?.text.toString() -> {
+                    notGoodPass(registerPassword) -> {}
+                    !isValidEmail(registerEmail) -> {}
+                    registerPasswordET.text.toString() != registerPasswordRepeatET.text.toString() -> {
                         Snackbar.make(binding.root, "Passwords should match", Snackbar.LENGTH_SHORT)
-                            .setTextMaxLines(1)
-                            .setBackgroundTint(ContextCompat.getColor(requireContext(), R.color.regular_red))
+                            .setTextMaxLines(2)
+                            .setBackgroundTint(ContextCompat.getColor(App.appContext, R.color.regular_red))
                             .show()
                     }
                     else -> {
                         viewModel.register(
-                            email = tilEmail.editText?.text.toString(),
-                            password = tilPassword.editText?.text.toString()
+                            email = registerEmailET.text.toString(),
+                            password = registerPasswordET.text.toString()
                         )
 
                     }
@@ -106,6 +123,7 @@ class RegisterFragment : BaseFragment<FragmentRegisteBinding>(
             }
         }
     }
+
     override fun observers(){
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -120,7 +138,15 @@ class RegisterFragment : BaseFragment<FragmentRegisteBinding>(
                         }
                         is ResponseState.Success -> {
                             Toast.makeText(requireContext(), "registered successfully", Toast.LENGTH_SHORT).show()
+                            setFragmentResult(
+                                requestKey = FragmentRes.REG_DATA_KEY,
+                                result = bundleOf(
+                                    FragmentRes.EMAIL to binding.registerEmailET.text.toString(),
+                                    FragmentRes.PASSWORD to binding.registerPasswordET.text.toString()
+                                )
+                            )
                             hideProgressBar()
+                            goToLoginFra()
                         }
                         else -> {}
                     }
@@ -129,12 +155,29 @@ class RegisterFragment : BaseFragment<FragmentRegisteBinding>(
         }
     }
 
+
     private fun showProgressBar() {
         binding.registerProgressBar.visibility = View.VISIBLE
     }
-
+    private fun goToLoginFra() {
+        findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
+    }
     private fun hideProgressBar() {
         binding.registerProgressBar.visibility = View.GONE
+    }
+
+    override fun setup() {
+        val repository = Repository()
+        val viewModelFactory = RegisterViewModelFactory(repository)
+        viewModel = ViewModelProvider(this, viewModelFactory)[RegisterViewModel::class.java]
+        binding.apply {
+
+
+            registerPasswordET.background.alpha = 76
+            registerEmailET.background.alpha = 76
+            registerPasswordRepeatET.background.alpha = 76
+
+        }
     }
 
 }

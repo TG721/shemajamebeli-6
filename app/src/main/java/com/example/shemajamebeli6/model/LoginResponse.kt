@@ -1,7 +1,7 @@
 package com.example.shemajamebeli6.model
 
 data class LoginResponse(
-    val s: String?
+    val token: String?
 ) {
     data class LoginData(
         val email: String?,
